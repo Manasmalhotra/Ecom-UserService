@@ -12,5 +12,5 @@ public interface UserService {
     String createUser(UserEntity user);
     UserEntity editUser(int id,UserEntity user);
     String deleteUser(int id);
-
+    UserEntity getUserFromEmailOrMobileNo(String emailOrmobile);
 }

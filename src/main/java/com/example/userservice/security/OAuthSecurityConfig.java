@@ -35,6 +35,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
+/*
 @Configuration
 @EnableWebSecurity
 public class OAuthSecurityConfig {
@@ -80,8 +81,7 @@ public class OAuthSecurityConfig {
 
         return http.build();
     }
-
-    @Bean
+ @Bean
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("product-service")
@@ -100,8 +100,7 @@ public class OAuthSecurityConfig {
         return new InMemoryRegisteredClientRepository(oidcClient);
     }
 
-
-    @Bean
+  @Bean
     public JWKSource<SecurityContext> jwkSource() {
         KeyPair keyPair = generateRsaKey();
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
@@ -136,3 +135,4 @@ public class OAuthSecurityConfig {
         return AuthorizationServerSettings.builder().build();
     }
 }
+*/

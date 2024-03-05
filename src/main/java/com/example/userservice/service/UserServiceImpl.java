@@ -83,4 +83,9 @@ public class UserServiceImpl implements UserService{
         userRepository.delete(user);
         return "User Deleted Successfully!";
     }
+
+    @Override
+    public UserEntity getUserFromEmailOrMobileNo(String emailOrmobile) {
+        return userRepository.findByEmailOrMobileNo(emailOrmobile,emailOrmobile).get();
+    }
 }

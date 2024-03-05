@@ -103,7 +103,9 @@ public class AuthServiceImpl implements AuthService{
         Date currentDate=new Date();
         Date expiryDate=new Date(currentDate.getTime()+expirationTime);
         Map<String, Object> jsonForJWT = new HashMap<>();
+        jsonForJWT.put("userId",user.getId());
         jsonForJWT.put("email", user.getEmail());
+        jsonForJWT.put("mobileNumber",user.getMobileNo());
         jsonForJWT.put("role", user.getRole());
         jsonForJWT.put("createdAt", currentDate);
         jsonForJWT.put("expiryAt",expiryDate);
