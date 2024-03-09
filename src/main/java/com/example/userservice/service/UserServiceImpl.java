@@ -1,12 +1,13 @@
 package com.example.userservice.service;
 
+import com.example.userservice.configuration.KafkaProducerConfig;
 import com.example.userservice.exception.ResourceNotFoundException;
-import com.example.userservice.models.Address;
-import com.example.userservice.models.Role;
+import com.example.userservice.models.*;
 import com.example.userservice.dto.UserDTO;
-import com.example.userservice.models.UserEntity;
+import com.example.userservice.repository.EmailRepository;
 import com.example.userservice.repository.RoleRepository;
 import com.example.userservice.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,23 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService{
     UserRepository userRepository;
     ModelMapper modelMapper;
-    private final RoleRepository roleRepository;
+    KafkaProducerConfig kafkaProducerConfig;
 
-    public UserServiceImpl(UserRepository userRepository,ModelMapper modelMapper,
-                           RoleRepository roleRepository){
+
+    private final RoleRepository roleRepository;
+    ObjectMapper objectMapper;
+    EmailRepository emailRepository;
+
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper,
+                           RoleRepository roleRepository, KafkaProducerConfig kafkaProducerConfig,
+                           ObjectMapper objectMapper,
+                           EmailRepository emailRepository){
         this.userRepository=userRepository;
         this.modelMapper=modelMapper;
         this.roleRepository = roleRepository;
+        this.kafkaProducerConfig=kafkaProducerConfig;
+        this.objectMapper=objectMapper;
+        this.emailRepository=emailRepository;
     }
 
     public List<UserDTO> getAllUsers() {
@@ -58,6 +69,8 @@ public class UserServiceImpl implements UserService{
         user.setAddress(address);
         user.setCreatedAt(LocalDateTime.now());
         user.setRole(role);
+        user.setIsMobileVerfied(0);
+        user.setIsEmailVerified(0);
         userRepository.save(user);
         return "Profile Created Successfully!";
     }
@@ -87,5 +100,42 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity getUserFromEmailOrMobileNo(String emailOrmobile) {
         return userRepository.findByEmailOrMobileNo(emailOrmobile,emailOrmobile).get();
+    }
+
+    @Override
+    public void updateMobileVerificationStatus(int userId,String phoneNumber) {
+        userRepository.updateMobileVerificationStatus(userId);
+        MobileVerifiedEvent mobileVerifiedEvent=new MobileVerifiedEvent("8368455166",
+                phoneNumber,
+                "Hi, Welcome to MyProduct.com");
+        try{
+            kafkaProducerConfig.sendMessage("mobileVerificationSuccess",objectMapper.writeValueAsString(mobileVerifiedEvent));
+        }
+        catch(Exception e){
+            System.out.println("Something went wrong!");
+        }
+    }
+
+    @Override
+    public void saveEmailOTP(int userId, String emailAddress, int otp) {
+        EmailVerificationModel emailVerification=new EmailVerificationModel(userId,emailAddress,otp);
+        emailRepository.save(emailVerification);
+    }
+
+    @Override
+    public int getEmailOtp(int userId) {
+        return emailRepository.findByUserId(userId).getOtp();
+    }
+
+    @Override
+    public void updateEmailVerificationStatus(int userId, String email) {
+        userRepository.updateEmailVerificationStatus(userId);
+        EmailVerifiedEvent emailVerifiedEvent=new EmailVerifiedEvent(email,"myproduct@gmail.com","Welcome to MyProduct.com","Thanks for verifying your email!");
+        try{
+            kafkaProducerConfig.sendMessage("emailVerificationSuccess",objectMapper.writeValueAsString(emailVerifiedEvent));
+        }
+        catch(Exception e){
+            System.out.println("Something went wrong!");
+        }
     }
 }

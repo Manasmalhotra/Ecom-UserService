@@ -28,4 +28,9 @@ public class GlobalExceptionHandler{
         return new ResponseEntity<>(error,HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(VerificationFailedException.class)
+    public ResponseEntity<String> VerificationFailedExceptionHandler(VerificationFailedException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }

@@ -34,6 +34,7 @@ public class UserEntity {
     @JsonIgnore
     LocalDateTime createdAt;
     @ManyToOne
-    @JsonIgnore
     Role role;
+    int isMobileVerfied;
+    int isEmailVerified;
 }
