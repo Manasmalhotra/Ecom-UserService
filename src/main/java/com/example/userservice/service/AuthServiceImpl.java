@@ -102,8 +102,11 @@ public class AuthServiceImpl implements AuthService{
     private String generateToken(UserEntity user){
         Date currentDate=new Date();
         Date expiryDate=new Date(currentDate.getTime()+expirationTime);
+        System.out.println("Token expires At "+expiryDate);
         Map<String, Object> jsonForJWT = new HashMap<>();
+        jsonForJWT.put("userId",user.getId());
         jsonForJWT.put("email", user.getEmail());
+        jsonForJWT.put("mobileNumber",user.getMobileNo());
         jsonForJWT.put("role", user.getRole());
         jsonForJWT.put("createdAt", currentDate);
         jsonForJWT.put("expiryAt",expiryDate);

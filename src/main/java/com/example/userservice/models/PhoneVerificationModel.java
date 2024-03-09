@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class phoneVerificationModel {
+public class PhoneVerificationModel {
     String phoneNumber;
     String otp;
 }
