@@ -1,6 +1,6 @@
 # E-commerce User Service
 
-Welcome to the E-commerce User Service! 
+Welcome to the E-commerce User Service! </br>
 This service provides functionalities for managing user details including registration, authentication, and address management.
 
 
