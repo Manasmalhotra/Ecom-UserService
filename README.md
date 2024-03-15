@@ -22,6 +22,7 @@ This service provides functionalities for managing user details including regist
 **User Login:** Supports two authentication mechanisms: </br>
       1) Username-password authentication with JWT </br>
       2) OAuth 2: Provides OAuth 2 authentication for seamless integration with third-party services.</br>
+      
 **Address Management:** Facilitates CRUD operations for managing user addresses.
 
 
