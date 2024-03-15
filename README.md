@@ -16,13 +16,12 @@ Welcome to the E-commerce User Service! This service provides functionalities fo
 
 ## Core Functionalities
 
-User Registration: Allows users to register by providing necessary details.
+**User Registration:** Allows users to register by providing necessary details.
 
-User Login: Supports two authentication mechanisms:</br>
-      1) Username-password authentication
-      2) JWT authentication after login</br>
-OAuth 2: Provides OAuth 2 authentication for seamless integration with third-party services.</br>
-Address Management: Facilitates CRUD operations for managing user addresses.
+**User Login:** Supports two authentication mechanisms: </br>
+      1) Username-password authentication with JWT </br>
+      2) OAuth 2: Provides OAuth 2 authentication for seamless integration with third-party services.</br>
+**Address Management:** Facilitates CRUD operations for managing user addresses.
 
 
 ## Links to other services:</br>
